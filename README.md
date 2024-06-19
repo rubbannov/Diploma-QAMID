@@ -6,5 +6,5 @@
 4. Запустить эмулятор Pixel 7a API 29.
 5. Запустить тесты с помощью команды `./gradlew connectedAndroidTest`
 6. Для сбора и создания отчета напишите поочередно в терминале Android Studio команды:
-- `adb pull /sdcard/googletest/test_outputfiles/build/allure-results .\app\build
+- `adb pull /sdcard/googletest/test_outputfiles/build/allure-results .\app\build`
 - `allure serve .\app\build\allure-results`
