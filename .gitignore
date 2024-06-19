@@ -5,6 +5,8 @@ google-services.json
 build/
 app/release/
 allure-report
+
+!allure-results.zip
 ### STS ###
 .apt_generated
 .classpath
