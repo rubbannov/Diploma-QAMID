@@ -29,4 +29,12 @@ public class TestData {
             "Sed convallis tristique sem.";
 
     public static String SPECIAL_CHARACTERS_STRING = "<>&%$#@!";
+
+    // ERROR MESSAGES
+    public static String TOAST_MSG_LONG_TITLE = "Title is too long";
+    public static String TOAST_MSG_EMPTY_FIELDS = "Fill empty fields";
+    public static String TOAST_MSG_LONG_DESCRIPTION = "Description is too long";
+    public static String TOAST_MSG_SPECIAL_CHARACTERS = "The title must not contain special characters";
+    public static String TOAST_MSG_SOMETHING_WENT_WRONG = "Something went wrong. Try again later.";
+    public static String TOAST_MSG_CANT_BE_EMPTY = "Login and password cannot be empty";
 }

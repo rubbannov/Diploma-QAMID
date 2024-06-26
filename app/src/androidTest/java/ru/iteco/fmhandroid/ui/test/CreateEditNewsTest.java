@@ -19,6 +19,10 @@ import static ru.iteco.fmhandroid.ui.test.TestData.SPECIAL_CHARACTERS_STRING;
 import static ru.iteco.fmhandroid.ui.test.TestData.SQL_INJECTION;
 import static ru.iteco.fmhandroid.ui.test.TestData.TITLE;
 import static ru.iteco.fmhandroid.ui.test.TestData.TITLE_UPD;
+import static ru.iteco.fmhandroid.ui.test.TestData.TOAST_MSG_EMPTY_FIELDS;
+import static ru.iteco.fmhandroid.ui.test.TestData.TOAST_MSG_LONG_DESCRIPTION;
+import static ru.iteco.fmhandroid.ui.test.TestData.TOAST_MSG_LONG_TITLE;
+import static ru.iteco.fmhandroid.ui.test.TestData.TOAST_MSG_SPECIAL_CHARACTERS;
 import static ru.iteco.fmhandroid.ui.test.TestData.XSS_INJECTION;
 import static ru.iteco.fmhandroid.ui.utils.TestHelper.logIn;
 import static ru.iteco.fmhandroid.ui.utils.TestHelper.waitFor;
@@ -73,12 +77,14 @@ public class CreateEditNewsTest {
         logIn();
     }
 
+    CreatingEditingPage creatingEditingPage = new CreatingEditingPage();
+    ControlPanelPage controlPanelPage = new ControlPanelPage();
+
+
     @Test
     @Story("Проверка добавления новой новости")
     @Description("Проверка возможности создания новой новости")
     public void createNewsTest() {
-        CreatingEditingPage creatingEditingPage = new CreatingEditingPage();
-        ControlPanelPage controlPanelPage = new ControlPanelPage();
         String testTitle = TITLE + generateRandomFourDigitString();
         try {
             Allure.step("Идем на экран создания новости", () -> {
@@ -116,8 +122,6 @@ public class CreateEditNewsTest {
     @Story("Редактирование существующей новости")
     @Description("Проверка возможности редактирования существующей новости")
     public void editingNewsTest() {
-        CreatingEditingPage creatingEditingPage = new CreatingEditingPage();
-        ControlPanelPage controlPanelPage = new ControlPanelPage();
         String testTitle = TITLE_UPD + generateRandomFourDigitString();
         goToCreateNewsPage();
         creatingEditingPage.creatingNewNews();
@@ -160,8 +164,6 @@ public class CreateEditNewsTest {
     @Description("Проверка возможности удаления новости")
     @Test
     public void deleteNewsTest() {
-        CreatingEditingPage creatingEditingPage = new CreatingEditingPage();
-        ControlPanelPage controlPanelPage = new ControlPanelPage();
 
         Allure.step("Переходим на экран создания новости и создаем новость", () -> {
             goToCreateNewsPage();
@@ -180,8 +182,6 @@ public class CreateEditNewsTest {
     @Description("Проверяем, что приложение корректно обрабатывает некорректные данные при редактировании новости")
     @Test
     public void wrongDataCreateNewsTest() {
-        ControlPanelPage controlPanelPage = new ControlPanelPage();
-        CreatingEditingPage creatingEditingPage = new CreatingEditingPage();
         try {
             Allure.step("Переходим на страницу создания новости", () -> {
                 goToCreateNewsPage();
@@ -207,7 +207,7 @@ public class CreateEditNewsTest {
             });
 
             Allure.step("Проверяем что появилось сообщение об ошибке 'Название слишком длинное'", () -> {
-                onView(withText("Title is too long"))
+                onView(withText(TOAST_MSG_LONG_TITLE))
                         .inRoot(withDecorView(Matchers.not(decorView)))
                         .check(matches(isDisplayed()));
             });
@@ -231,7 +231,6 @@ public class CreateEditNewsTest {
     @Description("Проверка обработки ошибок при попытке сохранить новость без названия")
     @Test
     public void saveEmptyTitleTest() {
-        CreatingEditingPage creatingEditingPage = new CreatingEditingPage();
         Allure.step("Переходим на страницу создания новости", () -> {
             goToCreateNewsPage();
             creatingEditingPage.waitAndCheckPage();
@@ -255,7 +254,7 @@ public class CreateEditNewsTest {
             creatingEditingPage.tapToSaveButton();
         });
         Allure.step("Проверяем что появилось сообщение об ошибке 'Заполните пустые поля'", () -> {
-            onView(withText("Fill empty fields"))
+            onView(withText(TOAST_MSG_EMPTY_FIELDS))
                     .inRoot(withDecorView(Matchers.not(decorView)))
                     .check(matches(isDisplayed()));
         });
@@ -265,8 +264,6 @@ public class CreateEditNewsTest {
     @Description("Проверка обработки ошибок при вводе описания, превышающего допустимую длину")
     @Test
     public void createNewsWithLongDescription() {
-        ControlPanelPage controlPanelPage = new ControlPanelPage();
-        CreatingEditingPage creatingEditingPage = new CreatingEditingPage();
         String testTitle = TITLE + generateRandomFourDigitString();
         try {
             Allure.step("Переходим на страницу создания новости", () -> {
@@ -292,7 +289,7 @@ public class CreateEditNewsTest {
                 creatingEditingPage.tapToSaveButton();
             });
             Allure.step("Проверяем что появилось сообщение об ошибке 'Описание слишком длинное'", () -> {
-                onView(withText("Description is too long"))
+                onView(withText(TOAST_MSG_LONG_DESCRIPTION))
                         .inRoot(withDecorView(Matchers.not(decorView)))
                         .check(matches(isDisplayed()));
             });
@@ -316,8 +313,6 @@ public class CreateEditNewsTest {
     @Description("Проверка обработки ошибок при вводе спецсимволов в названии")
     @Test
     public void createNewsWithSpecialCharactersInTitleTest() {
-        ControlPanelPage controlPanelPage = new ControlPanelPage();
-        CreatingEditingPage creatingEditingPage = new CreatingEditingPage();
         try {
             Allure.step("Переходим на страницу создания новости", () -> {
                 goToCreateNewsPage();
@@ -342,7 +337,7 @@ public class CreateEditNewsTest {
                 creatingEditingPage.tapToSaveButton();
             });
             Allure.step("Проверяем что появилось сообщение об ошибке 'Заголовок не должен состоять из спецсимволов'", () -> {
-                onView(withText("The title must not contain special characters"))
+                onView(withText(TOAST_MSG_SPECIAL_CHARACTERS))
                         .inRoot(withDecorView(Matchers.not(decorView)))
                         .check(matches(isDisplayed()));
             });
@@ -366,8 +361,6 @@ public class CreateEditNewsTest {
     @Description("Проверить, что поле заголовка защищено от SQL-инъекций ")
     @Test
     public void createNewsWithSQLInjectionInTitleTest() {
-        ControlPanelPage controlPanelPage = new ControlPanelPage();
-        CreatingEditingPage creatingEditingPage = new CreatingEditingPage();
         try {
             Allure.step("Переходим на страницу создания новости", () -> {
                 goToCreateNewsPage();
@@ -403,8 +396,6 @@ public class CreateEditNewsTest {
     @Description("Проверить, что поле описания защищено от SQL-инъекций")
     @Test
     public void createNewsWithSQLInjectionInDescriptionTest() {
-        CreatingEditingPage creatingEditingPage = new CreatingEditingPage();
-        ControlPanelPage controlPanelPage = new ControlPanelPage();
         String testTitle = TITLE + generateRandomFourDigitString();
         try {
             Allure.step("Переходим на страницу создания новости", () -> {
@@ -442,8 +433,6 @@ public class CreateEditNewsTest {
     @Description("Проверить, что поле заголовка защищено от XSS-инъекций")
     @Test
     public void createNewsWithXSSInjectionInTitleTest() {
-        CreatingEditingPage creatingEditingPage = new CreatingEditingPage();
-        ControlPanelPage controlPanelPage = new ControlPanelPage();
         try {
             Allure.step("Переходим на страницу создания новости", () -> {
                 goToCreateNewsPage();
@@ -479,8 +468,6 @@ public class CreateEditNewsTest {
     @Description("Проверить, что поле описания защищено от XSS-инъекций")
     @Test
     public void createNewsWithXSSInjectionInDescriptionTest() {
-        CreatingEditingPage creatingEditingPage = new CreatingEditingPage();
-        ControlPanelPage controlPanelPage = new ControlPanelPage();
         String testTitle = TITLE + generateRandomFourDigitString();
         try {
             Allure.step("Переходим на страницу создания новости", () -> {

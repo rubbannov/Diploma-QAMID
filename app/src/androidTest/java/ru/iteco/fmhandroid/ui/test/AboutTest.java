@@ -39,12 +39,13 @@ public class AboutTest {
         logIn();
     }
 
+    NavBarActions navBarActions = new NavBarActions();
+    AboutPage aboutPage = new AboutPage();
+
     @Test
     @Story("Проверка экрана информации о разработчике")
     @Description("Проверяем что информация о разработчике доступна и видна")
     public void aboutInformationTest() {
-        NavBarActions navBarActions = new NavBarActions();
-        AboutPage aboutPage = new AboutPage();
             waitFor(1000);
             navBarActions.clickBurger();
             navBarActions.goToAboutPage();

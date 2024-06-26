@@ -38,11 +38,12 @@ public class MainScreenTest {
         logIn();
     }
 
+    MainPage mainPage = new MainPage();
+
     @Test
     @Story("Проверка отображения главного экрана приложения")
     @Description("Проверяем что главная страница загружена и элементы отображаются")
     public void newsListTest() {
-        MainPage mainPage = new MainPage();
         Allure.step("Ждем загрузку и проверяем что страница и элементы страницы отображается", () -> {
             mainPage.waitingPageToLoad();
             mainPage.checkPageLoaded();

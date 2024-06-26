@@ -40,12 +40,13 @@ public class NewsTest {
         logIn();
     }
 
+    NavBarActions navBarActions = new NavBarActions();
+    NewsPage newsPage = new NewsPage();
+
     @Test
     @Story("Проверка отображения экрана с новостями")
     @Description("Проверяем что страница с новостями загружена и элементы отображаются")
     public void newsListTest() {
-        NavBarActions navBarActions = new NavBarActions();
-        NewsPage newsPage = new NewsPage();
         Allure.step("Переходим на страницу новостей", () -> {
             navBarActions.clickBurger();
             navBarActions.goToNewsPage();
@@ -60,8 +61,6 @@ public class NewsTest {
     @Story("Проверка элементов страницы")
     @Description("Проверка взаимодействия с пользователем элементов новостей")
     public void newsListItemsTest() {
-        NavBarActions navBarActions = new NavBarActions();
-        NewsPage newsPage = new NewsPage();
         int ITEM_NUMBER = 1;
         Allure.step("Переходим на страницу новостей", () -> {
             navBarActions.clickBurger();

@@ -11,6 +11,8 @@ import static ru.iteco.fmhandroid.ui.test.TestData.INCORRECT_VALUE;
 import static ru.iteco.fmhandroid.ui.test.TestData.INVALID_LOGIN;
 import static ru.iteco.fmhandroid.ui.test.TestData.INVALID_PASSWORD;
 import static ru.iteco.fmhandroid.ui.test.TestData.SQL_INJECTION;
+import static ru.iteco.fmhandroid.ui.test.TestData.TOAST_MSG_CANT_BE_EMPTY;
+import static ru.iteco.fmhandroid.ui.test.TestData.TOAST_MSG_SOMETHING_WENT_WRONG;
 import static ru.iteco.fmhandroid.ui.test.TestData.VALID_LOGIN;
 import static ru.iteco.fmhandroid.ui.test.TestData.VALID_PASSWORD;
 import static ru.iteco.fmhandroid.ui.test.TestData.XSS_INJECTION;
@@ -62,12 +64,12 @@ public class LoginTest {
         logOut();
     }
 
+    LoginPage loginPage = new LoginPage();
+
     @Test
     @Story("Авторизация с правильными данными")
     @Description("Проверка успешного входа в систему с корректными данными")
     public void validAuthTest() {
-        LoginPage loginPage = new LoginPage();
-
         Allure.step("Открыть приложение", () -> {
             loginPage.waitingPageToLoad();
             loginPage.checkPageLoaded();
@@ -94,8 +96,6 @@ public class LoginTest {
     @Story("Авторизация с неправильными данными")
     @Description("Проверка обработки ошибки при неверных данных авторизации")
     public void invalidAuthTest() {
-        LoginPage loginPage = new LoginPage();
-
         Allure.step("Открыть приложение", () -> {
             loginPage.waitingPageToLoad();
             loginPage.checkPageLoaded();
@@ -112,7 +112,7 @@ public class LoginTest {
         });
 
         Allure.step("Проверка что появилось сообщение об ошибке", () -> {
-            onView(withText("Something went wrong. Try again later."))
+            onView(withText(TOAST_MSG_SOMETHING_WENT_WRONG))
                     .inRoot(withDecorView(Matchers.not(decorView)))
                     .check(matches(isDisplayed()));
         });
@@ -122,8 +122,6 @@ public class LoginTest {
     @Story("Авторизация с неправильными данными")
     @Description("Проверка обработки ошибки при пустом логине и некорректном пароле")
     public void incorrectAuthTest() {
-        LoginPage loginPage = new LoginPage();
-
         Allure.step("Открыть приложение", () -> {
             loginPage.waitingPageToLoad();
             loginPage.checkPageLoaded();
@@ -140,7 +138,7 @@ public class LoginTest {
         });
 
         Allure.step("Проверка что появилось сообщение об ошибке", () -> {
-            onView(withText("Login and password cannot be empty"))
+            onView(withText(TOAST_MSG_CANT_BE_EMPTY))
                     .inRoot(withDecorView(Matchers.not(decorView)))
                     .check(matches(isDisplayed()));
         });
@@ -150,8 +148,6 @@ public class LoginTest {
     @Story("Проверка на наличие SQL инъекций")
     @Description("Проверить, что поле логина защищено от SQL-инъекций")
     public void injectionSQLAuthTest() {
-        LoginPage loginPage = new LoginPage();
-
         Allure.step("Открыть приложение", () -> {
             loginPage.waitingPageToLoad();
             loginPage.checkPageLoaded();
@@ -168,7 +164,7 @@ public class LoginTest {
         });
 
         Allure.step("Проверка что появилось сообщение об ошибке", () -> {
-            onView(withText("Something went wrong. Try again later."))
+            onView(withText(TOAST_MSG_SOMETHING_WENT_WRONG))
                     .inRoot(withDecorView(Matchers.not(decorView)))
                     .check(matches(isDisplayed()));
         });
@@ -178,8 +174,6 @@ public class LoginTest {
     @Story("Проверка на наличие XSS инъекций")
     @Description("Проверить, что поле логина защищено от XSS-инъекций")
     public void injectionXSSAuthTest() {
-        LoginPage loginPage = new LoginPage();
-
         Allure.step("Открыть приложение", () -> {
             loginPage.waitingPageToLoad();
             loginPage.checkPageLoaded();
@@ -196,7 +190,7 @@ public class LoginTest {
         });
 
         Allure.step("Проверка что появилось сообщение об ошибке", () -> {
-            onView(withText("Something went wrong. Try again later."))
+            onView(withText(TOAST_MSG_SOMETHING_WENT_WRONG))
                     .inRoot(withDecorView(Matchers.not(decorView)))
                     .check(matches(isDisplayed()));
         });

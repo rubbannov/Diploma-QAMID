@@ -28,7 +28,6 @@ import ru.iteco.fmhandroid.ui.page.OurMissionPage;
 @LargeTest
 @RunWith(AllureAndroidJUnit4.class)
 public class OurMissionTest {
-    //TODO папку с тестами коммитить и пушить в последнюю очередь
     @Rule
     public ActivityScenarioRule<AppActivity> activityRule =
             new ActivityScenarioRule<>(AppActivity.class);
@@ -41,13 +40,14 @@ public class OurMissionTest {
         logIn();
     }
 
+    NavBarActions navBarActions = new NavBarActions();
+    OurMissionPage ourMissionPage = new OurMissionPage();
+
     @Test
     @Story("Проверка отображения экрана с цитатами")
     @Description("Проверяем что страница с цитатами загружена и элементы отображаются")
     @DisplayName("Проверка отображения экрана с цитатами")
     public void ourMissionScreenTest() {
-        NavBarActions navBarActions = new NavBarActions();
-        OurMissionPage ourMissionPage = new OurMissionPage();
         Allure.step("Переходим на страницу с цитатами", () -> {
             navBarActions.goToOurMissionPage();
             ourMissionPage.waitingPageToLoad();
@@ -62,8 +62,6 @@ public class OurMissionTest {
     @Description("Проверяем как открывается элемент с цитатой")
     @DisplayName("Проверка взаимодействия элемента с цитататми")
     public void ourMissionQuotesTest() {
-        NavBarActions navBarActions = new NavBarActions();
-        OurMissionPage ourMissionPage = new OurMissionPage();
         Allure.step("Переходим на страницу с цитатами", () -> {
             navBarActions.goToOurMissionPage();
             ourMissionPage.waitingPageToLoad();
