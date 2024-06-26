@@ -11,11 +11,12 @@ import ru.iteco.fmhandroid.ui.page.MainPage;
 import ru.iteco.fmhandroid.ui.page.NavBarActions;
 
 public class TestHelper {
-
+    @Step("Ждем несколько секунд")
     public static void waitFor(long millis) {
         SystemClock.sleep(millis);
     }
 
+    @Step("Выход из учетной записи")
     public static void logOut() {
         LoginPage loginPage = new LoginPage();
         NavBarActions navBarActions = new NavBarActions();
@@ -28,6 +29,7 @@ public class TestHelper {
             navBarActions.logOut();
         }
     }
+
     @Step("Предусловие: Пользователь должен быть авторизован")
     public static void logIn() {
         LoginPage loginPage = new LoginPage();

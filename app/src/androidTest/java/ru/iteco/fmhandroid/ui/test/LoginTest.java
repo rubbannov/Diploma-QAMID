@@ -30,7 +30,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -65,135 +64,101 @@ public class LoginTest {
     }
 
     LoginPage loginPage = new LoginPage();
+    MainPage mainPage = new MainPage();
 
     @Test
     @Story("Авторизация с правильными данными")
     @Description("Проверка успешного входа в систему с корректными данными")
     public void validAuthTest() {
-        Allure.step("Открыть приложение", () -> {
-            loginPage.waitingPageToLoad();
-            loginPage.checkPageLoaded();
-        });
+        loginPage.waitingPageToLoad();
+        loginPage.checkPageLoaded();
 
-        Allure.step("Ввести правильные логин и пароль", () -> {
-            loginPage.inputLogin(VALID_LOGIN);
-            loginPage.inputPassword(VALID_PASSWORD);
-        });
+        loginPage.inputLogin(VALID_LOGIN);
+        loginPage.inputPassword(VALID_PASSWORD);
 
-        Allure.step("Тап по кнопке 'Войти'", () -> {
-            waitFor(1000);
-            loginPage.signIn();
-        });
+        waitFor(1000);
+        loginPage.signIn();
 
-        MainPage mainPage = new MainPage();
-        Allure.step("Проверить успешный вход в систему", () -> {
-            mainPage.waitingPageToLoad();
-            mainPage.checkPageLoaded();
-        });
+        mainPage.waitingPageToLoad();
+        mainPage.checkPageLoaded();
+
     }
 
     @Test
     @Story("Авторизация с неправильными данными")
     @Description("Проверка обработки ошибки при неверных данных авторизации")
     public void invalidAuthTest() {
-        Allure.step("Открыть приложение", () -> {
-            loginPage.waitingPageToLoad();
-            loginPage.checkPageLoaded();
-        });
+        loginPage.waitingPageToLoad();
+        loginPage.checkPageLoaded();
 
-        Allure.step("Ввести неправильные логин и пароль", () -> {
-            loginPage.inputLogin(INVALID_LOGIN);
-            loginPage.inputPassword(INVALID_PASSWORD);
-        });
+        loginPage.inputLogin(INVALID_LOGIN);
+        loginPage.inputPassword(INVALID_PASSWORD);
 
-        Allure.step("Тап по кнопке 'Войти'", () -> {
-            waitFor(1000);
-            loginPage.signIn();
-        });
+        waitFor(1000);
+        loginPage.signIn();
 
-        Allure.step("Проверка что появилось сообщение об ошибке", () -> {
-            onView(withText(TOAST_MSG_SOMETHING_WENT_WRONG))
-                    .inRoot(withDecorView(Matchers.not(decorView)))
-                    .check(matches(isDisplayed()));
-        });
+        onView(withText(TOAST_MSG_SOMETHING_WENT_WRONG))
+                .inRoot(withDecorView(Matchers.not(decorView)))
+                .check(matches(isDisplayed()));
+
     }
 
     @Test
     @Story("Авторизация с неправильными данными")
     @Description("Проверка обработки ошибки при пустом логине и некорректном пароле")
     public void incorrectAuthTest() {
-        Allure.step("Открыть приложение", () -> {
-            loginPage.waitingPageToLoad();
-            loginPage.checkPageLoaded();
-        });
+        loginPage.waitingPageToLoad();
+        loginPage.checkPageLoaded();
 
-        Allure.step("Ввести в поле 'Логин' пустое значение и в поле 'Пароль' некорректное значение", () -> {
-            loginPage.inputLogin(EMPTY_STRING);
-            loginPage.inputPassword(INCORRECT_VALUE);
-        });
+        loginPage.inputLogin(EMPTY_STRING);
+        loginPage.inputPassword(INCORRECT_VALUE);
 
-        Allure.step("Тап по кнопке 'Войти'", () -> {
-            waitFor(1000);
-            loginPage.signIn();
-        });
+        waitFor(1000);
+        loginPage.signIn();
 
-        Allure.step("Проверка что появилось сообщение об ошибке", () -> {
-            onView(withText(TOAST_MSG_CANT_BE_EMPTY))
-                    .inRoot(withDecorView(Matchers.not(decorView)))
-                    .check(matches(isDisplayed()));
-        });
+        onView(withText(TOAST_MSG_CANT_BE_EMPTY))
+                .inRoot(withDecorView(Matchers.not(decorView)))
+                .check(matches(isDisplayed()));
+
     }
 
     @Test
     @Story("Проверка на наличие SQL инъекций")
     @Description("Проверить, что поле логина защищено от SQL-инъекций")
     public void injectionSQLAuthTest() {
-        Allure.step("Открыть приложение", () -> {
-            loginPage.waitingPageToLoad();
-            loginPage.checkPageLoaded();
-        });
 
-        Allure.step("Ввести в поле 'Логин' SQL инъекцию и в поле 'Пароль' любое значение", () -> {
-            loginPage.inputLogin(SQL_INJECTION);
-            loginPage.inputPassword(VALID_PASSWORD);
-        });
+        loginPage.waitingPageToLoad();
+        loginPage.checkPageLoaded();
 
-        Allure.step("Тап по кнопке 'Войти'", () -> {
-            waitFor(1000);
-            loginPage.signIn();
-        });
+        loginPage.inputLogin(SQL_INJECTION);
+        loginPage.inputPassword(VALID_PASSWORD);
 
-        Allure.step("Проверка что появилось сообщение об ошибке", () -> {
-            onView(withText(TOAST_MSG_SOMETHING_WENT_WRONG))
-                    .inRoot(withDecorView(Matchers.not(decorView)))
-                    .check(matches(isDisplayed()));
-        });
+        waitFor(1000);
+        loginPage.signIn();
+
+        onView(withText(TOAST_MSG_SOMETHING_WENT_WRONG))
+                .inRoot(withDecorView(Matchers.not(decorView)))
+                .check(matches(isDisplayed()));
+
     }
 
     @Test
     @Story("Проверка на наличие XSS инъекций")
     @Description("Проверить, что поле логина защищено от XSS-инъекций")
     public void injectionXSSAuthTest() {
-        Allure.step("Открыть приложение", () -> {
-            loginPage.waitingPageToLoad();
-            loginPage.checkPageLoaded();
-        });
+        loginPage.waitingPageToLoad();
+        loginPage.checkPageLoaded();
 
-        Allure.step("Ввести в поле 'Логин' XSS инъекцию и в поле 'Пароль' любое значение", () -> {
-            loginPage.inputLogin(XSS_INJECTION);
-            loginPage.inputPassword(VALID_PASSWORD);
-        });
+        loginPage.inputLogin(XSS_INJECTION);
+        loginPage.inputPassword(VALID_PASSWORD);
 
-        Allure.step("Тап по кнопке 'Войти'", () -> {
-            waitFor(1000);
-            loginPage.signIn();
-        });
+        waitFor(1000);
+        loginPage.signIn();
 
-        Allure.step("Проверка что появилось сообщение об ошибке", () -> {
-            onView(withText(TOAST_MSG_SOMETHING_WENT_WRONG))
-                    .inRoot(withDecorView(Matchers.not(decorView)))
-                    .check(matches(isDisplayed()));
-        });
+        onView(withText(TOAST_MSG_SOMETHING_WENT_WRONG))
+                .inRoot(withDecorView(Matchers.not(decorView)))
+                .check(matches(isDisplayed()));
+
     }
 }
 

@@ -1,4 +1,5 @@
 package ru.iteco.fmhandroid.ui.test;
+
 public class TestData {
     public static String EMPTY_STRING = "";
     public static String INCORRECT_VALUE = "!@#";

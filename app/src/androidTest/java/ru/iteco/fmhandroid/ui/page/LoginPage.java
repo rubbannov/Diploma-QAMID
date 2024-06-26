@@ -17,6 +17,7 @@ import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 
+import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 import ru.iteco.fmhandroid.ui.utils.WaitForViewAction;
 
@@ -30,25 +31,34 @@ public class LoginPage {
     );
     ViewInteraction passwordInput = onView(
             allOf(
-                isDescendantOfA(withId(R.id.password_text_input_layout)),
-                isAssignableFrom(EditText.class)
+                    isDescendantOfA(withId(R.id.password_text_input_layout)),
+                    isAssignableFrom(EditText.class)
             )
     );
     ViewInteraction enterButton = onView(withId(R.id.enter_button));
 
+    @Step("Проверка загрузки экрана")
     public void checkPageLoaded() {
         loginInput.check(matches(isDisplayed()));
         enterButton.check(matches(isDisplayed()));
     }
+
+    @Step("Вводим логин")
     public void inputLogin(String login) {
         loginInput.perform(replaceText(login), ViewActions.closeSoftKeyboard());
     }
+
+    @Step("Вводим пароль")
     public void inputPassword(String password) {
         passwordInput.perform(replaceText(password), ViewActions.closeSoftKeyboard());
     }
+
+    @Step("Тап по кнопке Войти")
     public void signIn() {
         enterButton.perform(click());
     }
+
+    @Step("Ожидание загрузки экрана")
     public void waitingPageToLoad() {
         try {
             Espresso.onView(ViewMatchers.isRoot()).perform(
@@ -56,7 +66,7 @@ public class LoginPage {
                             ViewMatchers.withId(R.id.login_text_input_layout), 10000));
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Page is not load");
+            throw new AssertionError("Page does not load");
         }
     }
 

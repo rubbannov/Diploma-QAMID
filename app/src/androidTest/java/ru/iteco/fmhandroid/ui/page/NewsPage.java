@@ -19,6 +19,7 @@ import androidx.test.espresso.matcher.ViewMatchers;
 
 import org.hamcrest.Matchers;
 
+import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 import ru.iteco.fmhandroid.ui.utils.WaitForViewAction;
 
@@ -32,73 +33,42 @@ public class NewsPage {
     ViewInteraction newsItemTitle = onView(withIndex(withId(R.id.news_item_title_text_view), index));
     ViewInteraction newsItemDescription = onView(withId(R.id.news_item_description_text_view));
 
+    @Step("Проверка загрузки экрана")
     public void checkPageLoaded() {
         newsList.check(matches(isDisplayed()));
         sortButton.check(matches(isDisplayed()));
         filterButton.check(matches(isDisplayed()));
     }
 
+    @Step("Ожидание загрузки экрана")
     public void waitingPageToLoad() {
         Espresso.onView(ViewMatchers.isRoot()).perform(WaitForViewAction.waitForView(
                 ViewMatchers.withId(R.id.news_list_recycler_view), 10000));
     }
 
-    public void sortNews() {
-        sortButton.check(matches(isDisplayed()));
-        sortButton.perform(click());
-    }
-
-    public void filterNews() {
-        filterButton.check(matches(isDisplayed()));
-        filterButton.perform(click());
-    }
-
+    @Step("Тап по кнопке создания новости")
     public void editNews() {
         editButton.check(matches(isDisplayed()));
         editButton.perform(click());
     }
 
-    public void hideShowNewsList() {
-        expandButton.check(matches(isDisplayed()));
-        expandButton.perform(click());
-    }
-
+    @Step("Раскрытие элемента с новостью")
     public void newsItemOpenClose(int numberOfItem) {
         newsList.check(matches(isDisplayed()));
         newsList.perform(actionOnItemAtPosition(numberOfItem, click()));
     }
 
-    public void checkNewsTitleExist(String title, int indexOfItem) {
-        index = indexOfItem;
-        newsItemTitle.check(matches(withText(title)));
-
-    }
-
-    public void checkNewsDescriptionWithTextExist(String description) {
-        newsItemDescription.check(matches(withText(description)));
-    }
-
+    @Step("Проверка что новость раскрылась и видно описание")
     public void checkNewsDescriptionItemExist() {
         onView(
                 allOf(
-                    withId(R.id.news_item_description_text_view),
-                    withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)
+                        withId(R.id.news_item_description_text_view),
+                        withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)
                 )
         ).check(matches(isDisplayed()));
     }
 
-    public void checkNewsTitleDoesNotExist(String title) {
-        ViewInteraction doesNotExistTitle = onView(
-                allOf(withId(R.id.news_item_title_text_view), withText(title)));
-        doesNotExistTitle.check(doesNotExist());
-    }
-
-    public void checkNewsDescriptionDoesNotExist(String Description) {
-        ViewInteraction doesNotExistDescription = onView(
-                allOf(withId(R.id.news_item_description_text_view), withText(Description)));
-        doesNotExistDescription.check(doesNotExist());
-    }
-
+    @Step("Переход на экран управления новостями")
     public static void goToControlPage() {
         NavBarActions navBarActions = new NavBarActions();
         ControlPanelPage controlPanelPage = new ControlPanelPage();
@@ -110,6 +80,8 @@ public class NewsPage {
         controlPanelPage.waitingPageToLoad();
         controlPanelPage.checkPageLoaded();
     }
+
+    @Step("Переход к экрану создания новости")
     public static void goToCreateNewsPage() {
         goToControlPage();
         ControlPanelPage controlPanelPage = new ControlPanelPage();

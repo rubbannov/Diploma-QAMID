@@ -10,7 +10,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -47,14 +46,11 @@ public class NewsTest {
     @Story("Проверка отображения экрана с новостями")
     @Description("Проверяем что страница с новостями загружена и элементы отображаются")
     public void newsListTest() {
-        Allure.step("Переходим на страницу новостей", () -> {
-            navBarActions.clickBurger();
-            navBarActions.goToNewsPage();
-            newsPage.waitingPageToLoad();
-        });
-        Allure.step("Проверяем что страница загружена и отображаются элементы страницы", () -> {
-            newsPage.checkPageLoaded();
-        });
+        navBarActions.clickBurger();
+        navBarActions.goToNewsPage();
+        newsPage.waitingPageToLoad();
+        newsPage.checkPageLoaded();
+
     }
 
     @Test
@@ -62,14 +58,11 @@ public class NewsTest {
     @Description("Проверка взаимодействия с пользователем элементов новостей")
     public void newsListItemsTest() {
         int ITEM_NUMBER = 1;
-        Allure.step("Переходим на страницу новостей", () -> {
-            navBarActions.clickBurger();
-            navBarActions.goToNewsPage();
-            newsPage.waitingPageToLoad();
-        });
-        Allure.step("Проверяем что элемент раскрывается и отображается описание", () -> {
-            newsPage.newsItemOpenClose(ITEM_NUMBER);
-            newsPage.checkNewsDescriptionItemExist();
-        });
+        navBarActions.clickBurger();
+        navBarActions.goToNewsPage();
+        newsPage.waitingPageToLoad();
+        newsPage.newsItemOpenClose(ITEM_NUMBER);
+        newsPage.checkNewsDescriptionItemExist();
+
     }
 }

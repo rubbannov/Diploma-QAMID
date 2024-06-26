@@ -10,7 +10,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -44,10 +43,9 @@ public class MainScreenTest {
     @Story("Проверка отображения главного экрана приложения")
     @Description("Проверяем что главная страница загружена и элементы отображаются")
     public void newsListTest() {
-        Allure.step("Ждем загрузку и проверяем что страница и элементы страницы отображается", () -> {
-            mainPage.waitingPageToLoad();
-            mainPage.checkPageLoaded();
-        });
+        mainPage.waitingPageToLoad();
+        mainPage.checkPageLoaded();
+
     }
 
 }

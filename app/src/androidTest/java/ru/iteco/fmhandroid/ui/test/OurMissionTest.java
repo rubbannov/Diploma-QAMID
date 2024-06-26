@@ -10,7 +10,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -48,13 +47,10 @@ public class OurMissionTest {
     @Description("Проверяем что страница с цитатами загружена и элементы отображаются")
     @DisplayName("Проверка отображения экрана с цитатами")
     public void ourMissionScreenTest() {
-        Allure.step("Переходим на страницу с цитатами", () -> {
-            navBarActions.goToOurMissionPage();
-            ourMissionPage.waitingPageToLoad();
-        });
-        Allure.step("Проверяем что страница с цитатами загружена и отображаются элементы страницы", () -> {
-            ourMissionPage.checkPageLoaded();
-        });
+        navBarActions.goToOurMissionPage();
+        ourMissionPage.waitingPageToLoad();
+        ourMissionPage.checkPageLoaded();
+
     }
 
     @Test
@@ -62,15 +58,12 @@ public class OurMissionTest {
     @Description("Проверяем как открывается элемент с цитатой")
     @DisplayName("Проверка взаимодействия элемента с цитататми")
     public void ourMissionQuotesTest() {
-        Allure.step("Переходим на страницу с цитатами", () -> {
-            navBarActions.goToOurMissionPage();
-            ourMissionPage.waitingPageToLoad();
-            ourMissionPage.checkPageLoaded();
-        });
-        Allure.step("Проверяем что элемент раскрывается и отображается описание", () -> {
-            ourMissionPage.quotesItemOpenClose(2);
-            ourMissionPage.checkDescriptionItem();
-        });
+        navBarActions.goToOurMissionPage();
+        ourMissionPage.waitingPageToLoad();
+        ourMissionPage.checkPageLoaded();
+        ourMissionPage.quotesItemOpenClose(2);
+        ourMissionPage.checkDescriptionItem();
+
 
     }
 }

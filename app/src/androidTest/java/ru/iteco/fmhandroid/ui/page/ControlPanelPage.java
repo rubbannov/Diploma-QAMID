@@ -20,6 +20,7 @@ import org.junit.Rule;
 
 import java.util.Random;
 
+import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 import ru.iteco.fmhandroid.ui.AppActivity;
 import ru.iteco.fmhandroid.ui.utils.WaitForViewAction;
@@ -35,24 +36,29 @@ public class ControlPanelPage {
     ViewInteraction okSystemButton = onView(
             allOf(withId(android.R.id.button1), withText("OK")));
 
+    @Step("Проверка загрузки экрана")
     public void checkPageLoaded() {
         newsList.check(matches(isDisplayed()));
     }
 
+    @Step("Ожидание загрузки экрана")
     public void waitingPageToLoad() {
         Espresso.onView(ViewMatchers.isRoot()).perform(WaitForViewAction.waitForView(
                 ViewMatchers.withId(R.id.add_news_image_view), 10000));
     }
 
+    @Step("Выполняем поиск новости по тексту")
     public ViewInteraction findNewsByText(String text) {
         return onView(withText(text));
     }
 
+    @Step("Тап по кнопке создания новости")
     public void tapCreateButton() {
         createNewButton.check(matches(isDisplayed()));
         createNewButton.perform(click());
     }
 
+    @Step("Тап по кнопке редактирования новости")
     public void tapEditingNewsButton(String titleOfNews) {
         ViewInteraction editNewsButton = onView(
                 allOf(
@@ -65,6 +71,7 @@ public class ControlPanelPage {
         editNewsButton.perform(click());
     }
 
+    @Step("Тап ко кнопке удаления новости")
     public void deleteNews(String titleOfNews) {
         waitFor(1000);
         onView(withId(R.id.news_list_recycler_view)).check(matches(isDisplayed()));
@@ -77,11 +84,13 @@ public class ControlPanelPage {
         tapOkSystemButton();
     }
 
+    @Step("Тап ОК в системном окне")
     public void tapOkSystemButton() {
         okSystemButton.check(matches(isDisplayed()));
         okSystemButton.perform(click());
     }
 
+    @Step("Генерируем рандомное 4х значное число")
     public static String generateRandomFourDigitString() {
         Random random = new Random();
         int randomNumber = random.nextInt(10000); // Генерируем случайное число от 0 до 9999
