@@ -9,6 +9,8 @@ import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibilit
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 
+import static io.qameta.allure.kotlin.Allure.step;
+
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.matcher.ViewMatchers;
@@ -21,30 +23,35 @@ public class OurMissionPage {
     ViewInteraction title = onView(withId(R.id.our_mission_title_text_view));
     ViewInteraction description = onView(withId(R.id.our_mission_item_description_text_view));
     ViewInteraction quotesList = onView(withId(R.id.our_mission_item_list_recycler_view));
-    @Step("Проверка загрузки экрана")
+
     public void checkPageLoaded() {
+        step("Проверка загрузки экрана");
         title.check(matches(isDisplayed()));
         quotesList.check(matches(isDisplayed()));
     }
 
-    @Step("Ожидание загрузки экрана")
+
     public void waitingPageToLoad() {
+        step("Ожидание загрузки экрана");
         Espresso.onView(ViewMatchers.isRoot()).perform(
                 WaitForViewAction.waitForView(
                         ViewMatchers.withId(
                                 R.id.our_mission_item_list_recycler_view), 10000));
     }
+
     @Step("Раскрытие элемента с цитатой")
     public void quotesItemOpenClose(int numberOfItem) {
+        step("Раскрытие элемента с цитатой №" + numberOfItem);
         quotesList.check(matches(isDisplayed()));
         quotesList.perform(actionOnItemAtPosition(numberOfItem, click()));
     }
-    @Step("Проверка что цитата раскрылась и видно описание")
+
     public void checkDescriptionItem() {
+        step("Проверка что цитата раскрылась и видно описание");
         onView(
                 allOf(
-                withId(R.id.our_mission_item_description_text_view),
-                withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)
+                        withId(R.id.our_mission_item_description_text_view),
+                        withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)
                 )
         ).check(matches(isDisplayed()));
     }

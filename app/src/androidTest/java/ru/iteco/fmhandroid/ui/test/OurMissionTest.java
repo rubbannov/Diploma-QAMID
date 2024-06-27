@@ -10,13 +10,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
+import io.qameta.allure.kotlin.Description;
+import io.qameta.allure.kotlin.Epic;
+import io.qameta.allure.kotlin.Feature;
+import io.qameta.allure.kotlin.Story;
 import io.qameta.allure.android.rules.ScreenshotRule;
 import io.qameta.allure.android.runners.AllureAndroidJUnit4;
-import io.qameta.allure.junit4.DisplayName;
+import io.qameta.allure.kotlin.junit4.DisplayName;
 import ru.iteco.fmhandroid.ui.AppActivity;
 import ru.iteco.fmhandroid.ui.page.NavBarActions;
 import ru.iteco.fmhandroid.ui.page.OurMissionPage;
@@ -56,11 +56,10 @@ public class OurMissionTest {
     @Test
     @Story("Проверка взаимодействия элемента с цитататми")
     @Description("Проверяем как открывается элемент с цитатой")
-    @DisplayName("Проверка взаимодействия элемента с цитататми")
+    @DisplayName("Проверка взаимодействия элемента с цитататами")
     public void ourMissionQuotesTest() {
         navBarActions.goToOurMissionPage();
         ourMissionPage.waitingPageToLoad();
-        ourMissionPage.checkPageLoaded();
         ourMissionPage.quotesItemOpenClose(2);
         ourMissionPage.checkDescriptionItem();
 

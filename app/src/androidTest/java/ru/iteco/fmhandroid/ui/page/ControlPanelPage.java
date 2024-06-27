@@ -9,6 +9,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static io.qameta.allure.kotlin.Allure.step;
 import static ru.iteco.fmhandroid.ui.utils.TestHelper.waitFor;
 
 import androidx.test.espresso.Espresso;
@@ -36,30 +37,30 @@ public class ControlPanelPage {
     ViewInteraction okSystemButton = onView(
             allOf(withId(android.R.id.button1), withText("OK")));
 
-    @Step("Проверка загрузки экрана")
     public void checkPageLoaded() {
+        step("Проверка загрузки экрана контрольной панели");
         newsList.check(matches(isDisplayed()));
     }
 
-    @Step("Ожидание загрузки экрана")
     public void waitingPageToLoad() {
+        step("Ожидание загрузки экрана контрольной панели");
         Espresso.onView(ViewMatchers.isRoot()).perform(WaitForViewAction.waitForView(
                 ViewMatchers.withId(R.id.add_news_image_view), 10000));
     }
 
-    @Step("Выполняем поиск новости по тексту")
     public ViewInteraction findNewsByText(String text) {
+        step("Выполняем поиск новости по тексту '" + text + "'");
         return onView(withText(text));
     }
 
-    @Step("Тап по кнопке создания новости")
     public void tapCreateButton() {
+        step("Тап по кнопке создания новости");
         createNewButton.check(matches(isDisplayed()));
         createNewButton.perform(click());
     }
 
-    @Step("Тап по кнопке редактирования новости")
     public void tapEditingNewsButton(String titleOfNews) {
+        step("Тап по кнопке редактирования новости '" + titleOfNews + "'");
         ViewInteraction editNewsButton = onView(
                 allOf(
                         withId(R.id.edit_news_item_image_view),
@@ -71,8 +72,8 @@ public class ControlPanelPage {
         editNewsButton.perform(click());
     }
 
-    @Step("Тап ко кнопке удаления новости")
     public void deleteNews(String titleOfNews) {
+        step("Тап ко кнопке удаления новости '" + titleOfNews + "'");
         waitFor(1000);
         onView(withId(R.id.news_list_recycler_view)).check(matches(isDisplayed()));
         onView(allOf(
@@ -84,13 +85,12 @@ public class ControlPanelPage {
         tapOkSystemButton();
     }
 
-    @Step("Тап ОК в системном окне")
     public void tapOkSystemButton() {
+        step("Тап ОК в системном окне");
         okSystemButton.check(matches(isDisplayed()));
         okSystemButton.perform(click());
     }
 
-    @Step("Генерируем рандомное 4х значное число")
     public static String generateRandomFourDigitString() {
         Random random = new Random();
         int randomNumber = random.nextInt(10000); // Генерируем случайное число от 0 до 9999

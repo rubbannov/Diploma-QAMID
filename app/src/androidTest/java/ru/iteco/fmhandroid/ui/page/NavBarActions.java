@@ -6,10 +6,10 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static io.qameta.allure.kotlin.Allure.step;
 
 import androidx.test.espresso.ViewInteraction;
 
-import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 
 public class NavBarActions {
@@ -21,41 +21,42 @@ public class NavBarActions {
     ViewInteraction logOutButton = onView(withText("Log out"));
     ViewInteraction mainMenuButton = onView(withText("Main"));
 
-    @Step("Выходим из учетной записи")
     public void logOut() {
+        step("Выход из учетной записи:");
         profileIconButton.check(matches(isDisplayed()));
         profileIconButton.perform(click());
-
+        step("Тап по иконке пользователя");
         logOutButton.check(matches(isDisplayed()));
         logOutButton.perform(click());
+        step("Тап по кнопке Выйти");
     }
 
-    @Step("Тап по бургеру")
     public void clickBurger() {
+        step("Тап по бургеру");
         mainMenuBurger.check(matches(isDisplayed()));
         mainMenuBurger.perform(click());
     }
 
-    @Step("Переход на экран с цитатами")
     public void goToOurMissionPage() {
+        step("Переход на экран с цитатами");
         ourMissionButton.check(matches(isDisplayed()));
         ourMissionButton.perform(click());
     }
 
-    @Step("Переход на экран с новостями")
     public void goToNewsPage() {
+        step("Переход на экран с новостями");
         newsButton.check(matches(isDisplayed()));
         newsButton.perform(click());
     }
 
-    @Step("Переход на экран с информацией о разработчике")
     public void goToAboutPage() {
+        step("Переход на экран с информацией о разработчике");
         aboutButton.check(matches(isDisplayed()));
         aboutButton.perform(click());
     }
 
-    @Step("Переход на главный экран")
     public void goToMainPage() {
+        step("Переход на главный экран");
         mainMenuButton.check(matches(isDisplayed()));
         mainMenuButton.perform(click());
     }

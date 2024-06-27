@@ -6,6 +6,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static io.qameta.allure.kotlin.Allure.step;
 import static ru.iteco.fmhandroid.ui.page.ControlPanelPage.generateRandomFourDigitString;
 import static ru.iteco.fmhandroid.ui.page.NewsPage.goToControlPage;
 import static ru.iteco.fmhandroid.ui.page.NewsPage.goToCreateNewsPage;
@@ -42,21 +43,22 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import io.qameta.allure.Allure;
-import io.qameta.allure.Description;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
 import io.qameta.allure.android.rules.ScreenshotRule;
 import io.qameta.allure.android.runners.AllureAndroidJUnit4;
+import io.qameta.allure.kotlin.Description;
+import io.qameta.allure.kotlin.Epic;
+import io.qameta.allure.kotlin.Feature;
+import io.qameta.allure.kotlin.Story;
+import io.qameta.allure.kotlin.junit4.DisplayName;
 import ru.iteco.fmhandroid.ui.AppActivity;
 import ru.iteco.fmhandroid.ui.page.ControlPanelPage;
 import ru.iteco.fmhandroid.ui.page.CreatingEditingPage;
 
-@Epic("Создание/редактирование новостей")
-@Feature("Проверка реализации функционала создания и редактирования новостей")
 @LargeTest
 @RunWith(AllureAndroidJUnit4.class)
+@Epic("Создание/редактирование новостей")
+@Feature("Проверка реализации функционала создания и редактирования новостей")
+@DisplayName("Создание/редактирование новостей")
 public class CreateEditNewsTest {
 
     @Rule
@@ -83,6 +85,7 @@ public class CreateEditNewsTest {
     @Test
     @Story("Проверка добавления новой новости")
     @Description("Проверка возможности создания новой новости")
+    @DisplayName("Проверка создания новости")
     public void createNewsTest() {
         String testTitle = TITLE + generateRandomFourDigitString();
         try {
@@ -94,10 +97,11 @@ public class CreateEditNewsTest {
             creatingEditingPage.editTime();
             creatingEditingPage.editDescription(DESCRIPTION);
             creatingEditingPage.tapToSaveButton();
-            Allure.step("Проверяем что новость создана и отображается в списке", () -> {
-                ViewInteraction result = controlPanelPage.findNewsByText(testTitle);
-                result.check(matches(isDisplayed()));
-            });
+            waitFor(1000);
+            step("Проверяем что новость с названием '" + testTitle + "' создана и отображается в списке");
+            ViewInteraction result = controlPanelPage.findNewsByText(testTitle);
+            result.check(matches(isDisplayed()));
+
         } finally {
             controlPanelPage.deleteNews(testTitle);
         }
@@ -106,6 +110,7 @@ public class CreateEditNewsTest {
     @Test
     @Story("Редактирование существующей новости")
     @Description("Проверка возможности редактирования существующей новости")
+    @DisplayName("Проверка редактирования новости")
     public void editingNewsTest() {
         String testTitle = TITLE_UPD + generateRandomFourDigitString();
         goToCreateNewsPage();
@@ -120,10 +125,10 @@ public class CreateEditNewsTest {
             creatingEditingPage.editTime();
             creatingEditingPage.editDescription(DESCRIPTION_UPD);
             creatingEditingPage.tapToSaveButton();
-            Allure.step("Проверяем что новость с обновленными данными отображается в списке", () -> {
-                ViewInteraction result = controlPanelPage.findNewsByText(testTitle);
-                result.check(matches(isDisplayed()));
-            });
+            waitFor(1000);
+            step("Проверяем что новость с новым названием '" + testTitle + "' создана и отображается в списке");
+            ViewInteraction result = controlPanelPage.findNewsByText(testTitle);
+            result.check(matches(isDisplayed()));
         } finally {
             controlPanelPage.deleteNews(testTitle);
         }
@@ -132,20 +137,22 @@ public class CreateEditNewsTest {
 
     @Story("Удаление новости")
     @Description("Проверка возможности удаления новости")
+    @DisplayName("Проверка удаления новости")
     @Test
     public void deleteNewsTest() {
         goToCreateNewsPage();
         creatingEditingPage.creatingNewNews();
         controlPanelPage.deleteNews(TITLE);
-        Allure.step("Проверяем что новость отсутствует в списке", () -> {
-            ViewInteraction result = controlPanelPage.findNewsByText(TITLE);
-            waitFor(2000);
-            result.check(doesNotExist());
-        });
+        waitFor(1000);
+        step("Проверяем что новость с названием '" + TITLE + "' удалена и не отображается в списке");
+        ViewInteraction result = controlPanelPage.findNewsByText(TITLE);
+        waitFor(2000);
+        result.check(doesNotExist());
     }
 
     @Story("Проверка обработки ошибок при некорректном вводе данных")
     @Description("Проверяем, что приложение корректно обрабатывает некорректные данные при редактировании новости")
+    @DisplayName("Создание новости с слишком длинным заголовком")
     @Test
     public void wrongDataCreateNewsTest() {
         try {
@@ -157,11 +164,11 @@ public class CreateEditNewsTest {
             creatingEditingPage.editTime();
             creatingEditingPage.editDescription(DESCRIPTION);
             creatingEditingPage.tapToSaveButton();
-            Allure.step("Проверяем что появилось сообщение об ошибке 'Название слишком длинное'", () -> {
-                onView(withText(TOAST_MSG_LONG_TITLE))
-                        .inRoot(withDecorView(Matchers.not(decorView)))
-                        .check(matches(isDisplayed()));
-            });
+
+            step("Проверяем что появилось сообщение об ошибке: " + TOAST_MSG_LONG_TITLE);
+            onView(withText(TOAST_MSG_LONG_TITLE))
+                    .inRoot(withDecorView(Matchers.not(decorView)))
+                    .check(matches(isDisplayed()));
         } catch (Exception e) {
             e.printStackTrace();
             waitFor(2000);
@@ -174,13 +181,14 @@ public class CreateEditNewsTest {
             } catch (AssertionFailedError q) {
                 q.printStackTrace();
                 controlPanelPage.deleteNews(OVER_100_CHARACTERS_STRING);
-                throw new AssertionError("Toast with message 'Title is too long' does not exist");
+                throw new AssertionError("Toast with message '" + TOAST_MSG_LONG_TITLE + "' does not exist");
             }
         }
     }
 
     @Story("Сохранение пустого названия новости")
     @Description("Проверка обработки ошибок при попытке сохранить новость без названия")
+    @DisplayName("Создание новости с пустым заголовком")
     @Test
     public void saveEmptyTitleTest() {
         goToCreateNewsPage();
@@ -191,16 +199,16 @@ public class CreateEditNewsTest {
         creatingEditingPage.editTime();
         creatingEditingPage.editDescription(DESCRIPTION);
         creatingEditingPage.tapToSaveButton();
-        Allure.step("Проверяем что появилось сообщение об ошибке 'Заполните пустые поля'", () -> {
-            onView(withText(TOAST_MSG_EMPTY_FIELDS))
-                    .inRoot(withDecorView(Matchers.not(decorView)))
-                    .check(matches(isDisplayed()));
-        });
 
+        step("Проверяем что появилось сообщение об ошибке: " + TOAST_MSG_EMPTY_FIELDS);
+        onView(withText(TOAST_MSG_EMPTY_FIELDS))
+                .inRoot(withDecorView(Matchers.not(decorView)))
+                .check(matches(isDisplayed()));
     }
 
     @Story("Ввод слишком длинного описания новости")
     @Description("Проверка обработки ошибок при вводе описания, превышающего допустимую длину")
+    @DisplayName("Создание новости с слишком длинным описанием")
     @Test
     public void createNewsWithLongDescription() {
         String testTitle = TITLE + generateRandomFourDigitString();
@@ -213,11 +221,11 @@ public class CreateEditNewsTest {
             creatingEditingPage.editTime();
             creatingEditingPage.editDescription(OVER_500_CHARACTERS_STRING);
             creatingEditingPage.tapToSaveButton();
-            Allure.step("Проверяем что появилось сообщение об ошибке 'Описание слишком длинное'", () -> {
-                onView(withText(TOAST_MSG_LONG_DESCRIPTION))
-                        .inRoot(withDecorView(Matchers.not(decorView)))
-                        .check(matches(isDisplayed()));
-            });
+
+            step("Проверяем что появилось сообщение об ошибке: " + TOAST_MSG_LONG_DESCRIPTION);
+            onView(withText(TOAST_MSG_LONG_DESCRIPTION))
+                    .inRoot(withDecorView(Matchers.not(decorView)))
+                    .check(matches(isDisplayed()));
         } catch (Exception e) {
             e.printStackTrace();
             waitFor(2000);
@@ -230,13 +238,14 @@ public class CreateEditNewsTest {
             } catch (AssertionFailedError q) {
                 q.printStackTrace();
                 controlPanelPage.deleteNews(testTitle);
-                throw new AssertionError("Toast with message 'Description is too long' does not exist");
+                throw new AssertionError("Toast with message '" + TOAST_MSG_LONG_DESCRIPTION + "' does not exist");
             }
         }
     }
 
     @Story("Ввод спецсимволов в названии новости")
     @Description("Проверка обработки ошибок при вводе спецсимволов в названии")
+    @DisplayName("Создание новости с спецсимволами в заголовке")
     @Test
     public void createNewsWithSpecialCharactersInTitleTest() {
         try {
@@ -248,11 +257,11 @@ public class CreateEditNewsTest {
             creatingEditingPage.editTime();
             creatingEditingPage.editDescription(OVER_500_CHARACTERS_STRING);
             creatingEditingPage.tapToSaveButton();
-            Allure.step("Проверяем что появилось сообщение об ошибке 'Заголовок не должен состоять из спецсимволов'", () -> {
-                onView(withText(TOAST_MSG_SPECIAL_CHARACTERS))
-                        .inRoot(withDecorView(Matchers.not(decorView)))
-                        .check(matches(isDisplayed()));
-            });
+
+            step("Проверяем что появилось сообщение об ошибке: " + TOAST_MSG_SPECIAL_CHARACTERS);
+            onView(withText(TOAST_MSG_SPECIAL_CHARACTERS))
+                    .inRoot(withDecorView(Matchers.not(decorView)))
+                    .check(matches(isDisplayed()));
         } catch (Exception e) {
             e.printStackTrace();
             waitFor(2000);
@@ -265,13 +274,14 @@ public class CreateEditNewsTest {
             } catch (AssertionFailedError q) {
                 q.printStackTrace();
                 controlPanelPage.deleteNews(SPECIAL_CHARACTERS_STRING);
-                throw new AssertionError("Toast with message 'The title must not contain special characters' does not exist");
+                throw new AssertionError("Toast with message '" + TOAST_MSG_SPECIAL_CHARACTERS + "' does not exist");
             }
         }
     }
 
     @Story("Проверка предотвращения SQL-инъекций в поле заголовка новости")
     @Description("Проверить, что поле заголовка защищено от SQL-инъекций ")
+    @DisplayName("Создание новости с SQL-инъекцией в заголовке")
     @Test
     public void createNewsWithSQLInjectionInTitleTest() {
         try {
@@ -283,10 +293,12 @@ public class CreateEditNewsTest {
             creatingEditingPage.editTime();
             creatingEditingPage.editDescription(OVER_100_CHARACTERS_STRING);
             creatingEditingPage.tapToSaveButton();
-            Allure.step("Проверяем что SQL-инъекция не срабатывает, новость сохраняется с текстом инъекции", () -> {
-                ViewInteraction result = controlPanelPage.findNewsByText(SQL_INJECTION);
-                result.check(matches(isDisplayed()));
-            });
+
+            step("Проверяем что SQL-инъекция '" + SQL_INJECTION
+                    + "' не срабатывает, новость сохраняется с текстом инъекции в заголовке");
+            ViewInteraction result = controlPanelPage.findNewsByText(SQL_INJECTION);
+            result.check(matches(isDisplayed()));
+
         } finally {
             controlPanelPage.deleteNews(SQL_INJECTION);
         }
@@ -294,6 +306,7 @@ public class CreateEditNewsTest {
 
     @Story("Проверка предотвращения SQL-инъекций в поле текста ")
     @Description("Проверить, что поле описания защищено от SQL-инъекций")
+    @DisplayName("Создание новости с SQL-инъекцией в описании")
     @Test
     public void createNewsWithSQLInjectionInDescriptionTest() {
         String testTitle = TITLE + generateRandomFourDigitString();
@@ -306,10 +319,12 @@ public class CreateEditNewsTest {
             creatingEditingPage.editTime();
             creatingEditingPage.editDescription(SQL_INJECTION);
             creatingEditingPage.tapToSaveButton();
-            Allure.step("Проверяем что SQL-инъекция не срабатывает, новость сохраняется с текстом инъекции", () -> {
-                ViewInteraction result = controlPanelPage.findNewsByText(testTitle);
-                result.check(matches(isDisplayed()));
-            });
+
+            step("Проверяем что SQL-инъекция '" + SQL_INJECTION
+                    + "' не срабатывает, новость сохраняется с названием '"
+                    + testTitle + "' и текстом инъекции в описании");
+            ViewInteraction result = controlPanelPage.findNewsByText(testTitle);
+            result.check(matches(isDisplayed()));
         } finally {
             controlPanelPage.deleteNews(testTitle);
         }
@@ -317,6 +332,7 @@ public class CreateEditNewsTest {
 
     @Story("Проверка предотвращения XSS-инъекций в поле заголовка ")
     @Description("Проверить, что поле заголовка защищено от XSS-инъекций")
+    @DisplayName("Создание новости с XSS-инъекцией в заголовке")
     @Test
     public void createNewsWithXSSInjectionInTitleTest() {
         try {
@@ -328,18 +344,20 @@ public class CreateEditNewsTest {
             creatingEditingPage.editTime();
             creatingEditingPage.editDescription(OVER_100_CHARACTERS_STRING);
             creatingEditingPage.tapToSaveButton();
-            Allure.step("Проверяем что XSS-инъекция не срабатывает, новость сохраняется с текстом инъекции", () -> {
-                ViewInteraction result = controlPanelPage.findNewsByText(XSS_INJECTION);
-                result.check(matches(isDisplayed()));
-            });
+
+            step("Проверяем что XSS-инъекция '" + XSS_INJECTION
+                    + "' не срабатывает, новость сохраняется с текстом инъекции в названии");
+            ViewInteraction result = controlPanelPage.findNewsByText(XSS_INJECTION);
+            result.check(matches(isDisplayed()));
         } finally {//Удаляем эту новость чтобы не было конфликтов при дальнейших тестах.
             controlPanelPage.deleteNews(XSS_INJECTION);
         }
     }
 
+    @Test
     @Story("Проверка предотвращения XSS-инъекций в поле текста ")
     @Description("Проверить, что поле описания защищено от XSS-инъекций")
-    @Test
+    @DisplayName("Создание новости с XSS-инъекцией в описании")
     public void createNewsWithXSSInjectionInDescriptionTest() {
         String testTitle = TITLE + generateRandomFourDigitString();
         try {
@@ -351,10 +369,12 @@ public class CreateEditNewsTest {
             creatingEditingPage.editTime();
             creatingEditingPage.editDescription(XSS_INJECTION);
             creatingEditingPage.tapToSaveButton();
-            Allure.step("Проверяем что XSS-инъекция не срабатывает, новость сохраняется с текстом инъекции", () -> {
-                ViewInteraction result = controlPanelPage.findNewsByText(testTitle);
-                result.check(matches(isDisplayed()));
-            });
+
+            step("Проверяем что SQL-инъекция '" + XSS_INJECTION
+                    + "' не срабатывает, новость сохраняется с названием '"
+                    + testTitle + "' и текстом инъекции в описании");
+            ViewInteraction result = controlPanelPage.findNewsByText(testTitle);
+            result.check(matches(isDisplayed()));
         } finally {//Удаляем эту новость чтобы не было конфликтов при дальнейших тестах.
             controlPanelPage.deleteNews(testTitle);
         }

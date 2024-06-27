@@ -10,8 +10,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.AllOf.allOf;
-
-
+import static io.qameta.allure.kotlin.Allure.step;
 import static ru.iteco.fmhandroid.ui.test.TestData.CATEGORY_ADVERTISEMENT;
 import static ru.iteco.fmhandroid.ui.test.TestData.DESCRIPTION;
 import static ru.iteco.fmhandroid.ui.test.TestData.TITLE;
@@ -20,7 +19,6 @@ import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.matcher.ViewMatchers;
 
-import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 import ru.iteco.fmhandroid.ui.utils.WaitForViewAction;
 
@@ -36,76 +34,76 @@ public class CreatingEditingPage {
     ViewInteraction okButton = onView(
             allOf(withId(android.R.id.button1), withText("OK")));
 
-    @Step("Проверка загрузки экрана")
     public void checkPageLoaded() {
+        step("Проверка загрузки экрана создания/редактирования новости");
         categoryField.check(matches(isDisplayed()));
     }
 
-    @Step("Ожидание загрузки экрана")
     public void waitingPageToLoad() {
+        step("Ожидание загрузки экрана создания/редактирования новости");
         Espresso.onView(ViewMatchers.isRoot()).perform(WaitForViewAction.waitForView(
                 ViewMatchers.withId(
                         R.id.news_item_category_text_auto_complete_text_view), 10000));
     }
 
-    @Step("Ожидание загрузки и проверка что экран загружен")
     public void waitAndCheckPage() {
+        step("Ожидание загрузки и проверка что экран создания/редактирования новости загружен");
         waitingPageToLoad();
         checkPageLoaded();
     }
 
-    @Step("Заполняем поле Категория")
     public void editCategory(String text) {
+        step("Вводим в поле Категория: " + text);
         categoryField.check(matches(isDisplayed()));
         categoryField.perform(replaceText(text));
     }
 
-    @Step("Заполняем поле Заголовок")
     public void editTitle(String text) {
+        step("Вводим в поле Заголовок: " + text);
         titleField.check(matches(isDisplayed()));
         titleField.perform(replaceText(text), closeSoftKeyboard());
     }
 
-    @Step("Заполняем дату")
     public void editDate() {
+        step("Заполняем дату");
         dateField.check(matches(isDisplayed()));
         dateField.perform(click());
         okButton.perform(scrollTo(), click());
     }
 
-    @Step("Заполняем время")
     public void editTime() {
+        step("Заполняем время");
         timeField.check(matches(isDisplayed()));
         timeField.perform(click());
         okButton.perform(scrollTo(), click());
     }
 
-    @Step("Заполняем поле описания")
     public void editDescription(String description) {
+        step("Вводим в поле описания: " + description);
         descriptionField.check(matches(isDisplayed()));
         descriptionField.perform(replaceText(description), closeSoftKeyboard());
     }
 
-    @Step("Переключаем актив/неактив новости")
     public void switchOnOff() {
+        step("Переключаем актив/неактив новости");
         switchActive.check(matches(isDisplayed()));
         switchActive.perform(click());
     }
 
-    @Step("Тап по кнопке Сохранить")
     public void tapToSaveButton() {
+        step("Тап по кнопке Сохранить");
         saveButton.check(matches(isDisplayed()));
         saveButton.perform(click());
     }
 
-    @Step("Тап по кнопке Отменить")
     public void tapToCancelButton() {
+        step("Тап по кнопке Отменить");
         cancelButton.check(matches(isDisplayed()));
         cancelButton.perform(click());
     }
 
-    @Step("Создание новости с произвольными данными")
     public void creatingNewNews() {
+        step("Создание новости с произвольными данными:");
         editCategory(CATEGORY_ADVERTISEMENT);
         editTitle(TITLE);
         editDate();

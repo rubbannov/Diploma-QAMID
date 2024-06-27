@@ -65,6 +65,7 @@ dependencies {
     def hilt_version = '2.41'
     def gson_version = '2.9.0'
     def swipe_refresh_version = '1.1.0'
+    def allure_kotlin = "2.4.0"
 
 
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -108,11 +109,10 @@ dependencies {
     androidTestUtil 'androidx.test:orchestrator:1.4.2'
     testImplementation 'org.hamcrest:hamcrest:2.2'
 
-
     //Allure
-    androidTestImplementation "io.qameta.allure:allure-kotlin-model:2.4.0"
-    androidTestImplementation "io.qameta.allure:allure-kotlin-commons:2.4.0"
-    androidTestImplementation "io.qameta.allure:allure-kotlin-junit4:2.4.0"
-    androidTestImplementation "io.qameta.allure:allure-kotlin-android:2.4.0"
+    androidTestImplementation "io.qameta.allure:allure-kotlin-model:$allure_kotlin"
+    androidTestImplementation "io.qameta.allure:allure-kotlin-commons:$allure_kotlin"
+    androidTestImplementation "io.qameta.allure:allure-kotlin-junit4:$allure_kotlin"
+    androidTestImplementation "io.qameta.allure:allure-kotlin-android:$allure_kotlin"
     testImplementation 'com.nordstrom.tools:junit-foundation:12.2.0'
 }

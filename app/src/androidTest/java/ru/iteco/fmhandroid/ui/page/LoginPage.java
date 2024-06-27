@@ -9,6 +9,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
+import static io.qameta.allure.kotlin.Allure.step;
 
 import android.widget.EditText;
 
@@ -17,7 +18,6 @@ import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 
-import io.qameta.allure.kotlin.Step;
 import ru.iteco.fmhandroid.R;
 import ru.iteco.fmhandroid.ui.utils.WaitForViewAction;
 
@@ -37,29 +37,29 @@ public class LoginPage {
     );
     ViewInteraction enterButton = onView(withId(R.id.enter_button));
 
-    @Step("Проверка загрузки экрана")
     public void checkPageLoaded() {
+        step("Проверка загрузки экрана входа в приложение");
         loginInput.check(matches(isDisplayed()));
         enterButton.check(matches(isDisplayed()));
     }
 
-    @Step("Вводим логин")
     public void inputLogin(String login) {
+        step("Вводим в поле логин " + login);
         loginInput.perform(replaceText(login), ViewActions.closeSoftKeyboard());
     }
 
-    @Step("Вводим пароль")
     public void inputPassword(String password) {
+        step("Вводим в поле пароль " + password);
         passwordInput.perform(replaceText(password), ViewActions.closeSoftKeyboard());
     }
 
-    @Step("Тап по кнопке Войти")
     public void signIn() {
+        step("Тап по кнопке Войти");
         enterButton.perform(click());
     }
 
-    @Step("Ожидание загрузки экрана")
     public void waitingPageToLoad() {
+        step("Ожидание загрузки экрана входа в приложение");
         try {
             Espresso.onView(ViewMatchers.isRoot()).perform(
                     WaitForViewAction.waitForView(
